@@ -67,6 +67,8 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
     step = 100
     step_3d = 20
 
+    stack = [ident(transform)]
+
     c = 0
     while c < len(lines):
         line = lines[c].strip()
@@ -158,4 +160,20 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
                 display(screen)
             else:
                 save_extension(screen, args[0])
+                
+        elif line == 'push':
+            #copy then append
+            first = []
+            for l in stack[-1]:
+                li = []
+                for e in l:
+                    li.append(e)
+                first.append(li)
+                
+            stack.append(first)
+
+        elif line == 'pop':
+            stack.pop()
+
+            
         c+= 1
