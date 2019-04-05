@@ -83,6 +83,8 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
             add_sphere(polygons,
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), step_3d)
+            matriX_mult(
+                #with sphere torus box multiply then display then clear plygon matrix
 
         elif line == 'torus':
             #print 'TORUS\t' + str(args)
@@ -101,6 +103,9 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
             add_circle(edges,
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), step)
+
+
+            #line curve circle to multiply don't use draw polygons
 
         elif line == 'hermite' or line == 'bezier':
             #print 'curve\t' + line + ": " + str(args)
@@ -121,13 +126,15 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
         elif line == 'scale':
             #print 'SCALE\t' + str(args)
             t = make_scale(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, transform)
+            matrix_mult(transform, t)
 
         elif line == 'move':
             #print 'MOVE\t' + str(args)
             t = make_translate(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, transform)
+            matrix_mult(transform, t)
 
+            #w/ move rotate and scale
+            
         elif line == 'rotate':
             #print 'ROTATE\t' + str(args)
             theta = float(args[1]) * (math.pi / 180)
@@ -138,7 +145,7 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
                 t = make_rotY(theta)
             else:
                 t = make_rotZ(theta)
-            matrix_mult(t, transform)
+            matrix_mult(transform, t)
 
         elif line == 'ident':
             ident(transform)
@@ -162,13 +169,13 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
                 save_extension(screen, args[0])
                 
         elif line == 'push':
-            #copy then append
             first = []
             for l in stack[-1]:
                 li = []
                 for e in l:
                     li.append(e)
                 first.append(li)
+                li = []
                 
             stack.append(first)
 
